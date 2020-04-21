@@ -1,7 +1,13 @@
 import React from 'react';
 import {
     Row,
-    Col
+    Col,
+    Nav,
+    Navbar,
+    NavDropdown,
+    Form,
+    FormControl,
+    Button
 } from 'react-bootstrap';
 import { number } from 'prop-types';
 
@@ -31,8 +37,32 @@ export default class TastingNotes extends React.Component {
         return (
             <div className="container">
                 <Row>
-                    <Col lg={true}>
-                        <h1>Tasting Notes</h1>
+                    <Col lg={12} md={12} sm={12}>
+                        <Navbar bg="light" expand="lg">
+                            <Navbar.Brand href="/">Tasting Notes</Navbar.Brand>
+                            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                            <Navbar.Collapse id="basic-navbar-nav">
+                                <Nav className="mr-auto">
+                                <Nav.Link href="/">New Note</Nav.Link>
+                                <Nav.Link href="/varietal">Grape Varietal</Nav.Link>
+                                <Nav.Link href="/vintage">Vintage</Nav.Link>
+                                <NavDropdown title="Price" id="basic-nav-dropdown">
+                                    <NavDropdown.Item href="/price/under_10">$10 and Under</NavDropdown.Item>
+                                    <NavDropdown.Item href="/price/under_20">Under $20</NavDropdown.Item>
+                                    <NavDropdown.Item href="/price/under_50">Under $50</NavDropdown.Item>
+                                    <NavDropdown.Item href="/price/under_100">Under $100</NavDropdown.Item>
+                                    <NavDropdown.Item href="/price/over_100">$100 +</NavDropdown.Item>
+                                </NavDropdown>
+                                <Nav.Link href="/region">Region</Nav.Link>
+                                <Nav.Link href="/country">Country</Nav.Link>
+                                <Nav.Link href="/rating">Rating</Nav.Link>
+                                </Nav>
+                                <Form inline>
+                                <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+                                <Button variant="outline-success">Search</Button>
+                                </Form>
+                            </Navbar.Collapse>
+                        </Navbar>
                     </Col>
                 </Row>
                 <Row>
@@ -64,15 +94,15 @@ export default class TastingNotes extends React.Component {
                                 </Col>
                             </Row>
                             <div className="form-group">
-                                <label htmlFor="PRODUCER">PRODUCER:</label>
+                                <label htmlFor="REGION">REGION:</label>
                                 <input type="text" className="form-control" onChange={(event) => {
-                                    this.onChange({ field: 'producer', value: event.target.value });
+                                    this.onChange({ field: 'region', value: event.target.value });
                                 }}/>
                             </div>
                             <div className="form-group">
-                                <label htmlFor="REGION_COUNTRY">REGION & COUNTRY:</label>
+                                <label htmlFor="COUNTRY">REGION:</label>
                                 <input type="text" className="form-control" onChange={(event) => {
-                                    this.onChange({ field: 'region', value: event.target.value });
+                                    this.onChange({ field: 'country', value: event.target.value });
                                 }}/>
                             </div>
                             <div className="form-group">
@@ -82,51 +112,15 @@ export default class TastingNotes extends React.Component {
                                 }}/>
                             </div>
                             <div className="form-group">
-                                <label htmlFor="RECOMMENDED_BY">RECOMMENDED BY:</label>
-                                <input type="text" className="form-control" onChange={(event) => {
-                                    this.onChange({ field: 'recommended', value: event.target.value });
-                                }}/>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="PLACE_DATE_BOUGHT">PLACE & DATE BOUGHT:</label>
-                                <input type="text" className="form-control" onChange={(event) => {
-                                    this.onChange({ field: 'bought', value: event.target.value });
-                                }}/>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="PLACE_DATE_TASTED">PLACE & DATE TASTED:</label>
-                                <input type="text" className="form-control" onChange={(event) => {
-                                    this.onChange({ field: 'tasted', value: event.target.value });
-                                }}/>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="APPEARANCE">APPEARANCE:</label>
-                                <input type="text" className="form-control" onChange={(event) => {
-                                    this.onChange({ field: 'appearance', value: event.target.value });
-                                }}/>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="NOSE">NOSE:</label>
-                                <input type="text" className="form-control" onChange={(event) => {
-                                    this.onChange({ field: 'nose', value: event.target.value });
-                                }}/>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="TASTE">TASTE:</label>
+                                <label htmlFor="NOTES">NOTES:</label>
                                 <textarea className="form-control" onChange={(event) => {
-                                    this.onChange({ field: 'taste', value: event.target.value });
+                                    this.onChange({ field: 'notes', value: event.target.value });
                                 }}/>
                             </div>
                             <div className="form-group">
-                                <label htmlFor="FINISH">FINISH:</label>
+                                <label htmlFor="RATING">OVERALL RATING:</label>
                                 <input type="text" className="form-control" onChange={(event) => {
-                                    this.onChange({ field: 'finish', value: event.target.value });
-                                }}/>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="OVERALL_IMPRESSION">OVERALL IMPRESSION:</label>
-                                <input type="text" className="form-control" onChange={(event) => {
-                                    this.onChange({ field: 'impression', value: event.target.value });
+                                    this.onChange({ field: 'rating', value: event.target.value });
                                 }}/>
                             </div>
                         </form>
