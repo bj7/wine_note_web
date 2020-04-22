@@ -1,7 +1,5 @@
 const express = require('express')
 const app = express()
-const port = 3000
-
 
 app.use(express.static('../../build'))
 // app.get('/', (req, res) => {
@@ -10,4 +8,9 @@ app.use(express.static('../../build'))
 // });
 app.get('/helloworld', (req, res) => res.send('hello world'))
 
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+app.listen(port);
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
