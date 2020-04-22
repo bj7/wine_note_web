@@ -9,6 +9,8 @@ app.use(express.static('../../build'))
 app.get('/helloworld', (req, res) => res.send('hello world'))
 
 let port = process.env.PORT;
+console.log('here is the port:', port);
+
 if (port == null || port == "") {
   port = 3000;
 }
