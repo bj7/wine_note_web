@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 
-app.use(express.static('../../build'))
+app.use(express.static(path.join(__dirname, '../../build')))
 // app.get('/', (req, res) => {
 //     console.log("root");
 //     // res.send('index.js')
