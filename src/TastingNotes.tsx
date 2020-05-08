@@ -37,7 +37,7 @@ export default class TastingNotes extends React.Component {
     render() {
         return (
             <div className="container">
-                <gHeader/>
+                <NavHeader/>
                 <Row>
                     <Col lg={6} md={8} sm={12}>
                         <form action="/save.js" method="post">
