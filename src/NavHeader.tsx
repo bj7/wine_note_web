@@ -1,5 +1,13 @@
 import React from 'react'
 import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    useRouteMatch,
+    useParams
+} from "react-router-dom";
+import {
     Row,
     Col,
     Nav,
@@ -12,26 +20,27 @@ import {
 
 export function NavHeader() {
     return (
-        <Row>
-            <Col lg={12} md={12} sm={12}>
+        <div className='row'>
+            <div className='col-lg-12 col-md-12 col-sm-12'>
                 <Navbar bg="light" expand="lg">
-                    <Navbar.Brand href="/">Tasting Notes</Navbar.Brand>
+                    <Link to="/" className="navbar navbar-brand">Tasting Notes</Link>
+                    {/* <Navbar.Brand href="/">Tasting Notes</Navbar.Brand> */}
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
-                        <Nav.Link href="/">New Note</Nav.Link>
-                        <Nav.Link href="/varietal">Grape Varietal</Nav.Link>
-                        <Nav.Link href="/vintage">Vintage</Nav.Link>
+                        <Link to="/" className="nav nav-link">New Note</Link>
+                        <Link to="/varietal" className="nav nav-link">Grape Varietal</Link>
+                        <Link to="/vintage" className="nav nav-link">Vinatge</Link>
                         <NavDropdown title="Price" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="/price/under_10">$10 and Under</NavDropdown.Item>
-                            <NavDropdown.Item href="/price/under_20">Under $20</NavDropdown.Item>
-                            <NavDropdown.Item href="/price/under_50">Under $50</NavDropdown.Item>
-                            <NavDropdown.Item href="/price/under_100">Under $100</NavDropdown.Item>
-                            <NavDropdown.Item href="/price/over_100">$100 +</NavDropdown.Item>
+                            <Link to="/price/under_10" className="dropdown-item">$10 and Under</Link>
+                            <Link to="/price/under_20" className="dropdown-item">Under $20</Link>
+                            <Link to="/price/under_50" className="dropdown-item">Under $50</Link>
+                            <Link to="/price/under_100" className="dropdown-item">Under $100</Link>
+                            <Link to="/price/over_100" className="dropdown-item">$100+</Link>
                         </NavDropdown>
-                        <Nav.Link href="/region">Region</Nav.Link>
-                        <Nav.Link href="/country">Country</Nav.Link>
-                        <Nav.Link href="/rating">Rating</Nav.Link>
+                        <Link to="/region" className="nav nav-link">Region</Link>
+                        <Link to="/country" className="nav nav-link">Country</Link>
+                        <Link to="/rating" className="nav nav-link">Rating</Link>
                         </Nav>
                         <Form inline>
                         <FormControl type="text" placeholder="Search" className="mr-sm-2" />
@@ -39,7 +48,7 @@ export function NavHeader() {
                         </Form>
                     </Navbar.Collapse>
                 </Navbar>
-            </Col>
-        </Row>
+            </div>
+        </div>
     )
 }
