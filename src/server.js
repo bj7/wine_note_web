@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const path = require('path')
 const { Client } = require('pg');
+const graphqlHTTP = require('express-graphql');
+const graphql = require('graphql');
 
 let client;
 // heroku postgres specific
@@ -36,9 +38,48 @@ CREATE TABLE IF NOT EXISTS Notes (
 )
 `;
 client.query(createIfNotExists, (err, res) => {
-  console.log(err, res)
-  client.end()
+  // console.log(err, res)
+  // client.end()
 })
+
+const noteType = new graphql.GraphQLObjectType({
+  name: 'Note',
+  fields: {
+    wine: { type: graphql.GraphQLString },
+    vintage: { type: graphql.GraphQLInt },
+    price: { type: graphql.GraphQLFloat },
+    region: { type: graphql.GraphQLString },
+    country: { type: graphql.GraphQLString },
+    varietal: { type: graphql.GraphQLString },
+    notes: { type: graphql.GraphQLString },
+    rating: { type: graphql.GraphQLInt }
+  }
+})
+const queryType = new graphql.GraphQLObjectType({
+  name: 'Query',
+  fields: {
+    getNotes: {
+      type: noteType,
+      resolve: () => {
+        return client.query("SELECT * FROM notes", (err, res) => {
+          console.log(res)
+        })
+      }
+    },
+    gethello: {
+      type: graphql.GraphQLString,
+      resolve: () => {
+        return 'Hello World'
+      }
+    }
+  }
+})
+const schema = new graphql.GraphQLSchema({query: queryType});
+
+app.use('/graphql', graphqlHTTP({
+  schema: schema,
+  graphiql: true,
+}));
 
 app.use(express.static(path.join(__dirname, '../build')))
 app.use(express.json())
