@@ -11,6 +11,7 @@ import {
 } from 'react-bootstrap';
 import { number } from 'prop-types';
 import { NavHeader } from './NavHeader'
+import Axios from 'axios'
 
 interface Input {
     field: string;
@@ -32,12 +33,21 @@ export default class TastingNotes extends React.Component {
 
     save() {
         console.log(this.form);
+        Axios.post('/save', {
+            params: {
+                saveData: this.form
+            }
+        })
+        .then(res => {
+            console.log(res);
+            
+        })
     }
 
     render() {
         return (
             <div className="container">
-                <NavHeader/>
+                {/* <NavHeader/> */}
                 <Row>
                     <Col lg={6} md={8} sm={12}>
                         <form action="/save.js" method="post">
