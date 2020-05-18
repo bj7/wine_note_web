@@ -3,7 +3,7 @@ const app = express()
 const path = require('path')
 const { Client } = require('pg');
 const graphqlHTTP = require('express-graphql');
-const graphql = require('graphql');
+const {buildSchema} = require('graphql');
 
 let client;
 // heroku postgres specific
@@ -42,42 +42,68 @@ client.query(createIfNotExists, (err, res) => {
   // client.end()
 })
 
-const noteType = new graphql.GraphQLObjectType({
-  name: 'Note',
-  fields: {
-    wine: { type: graphql.GraphQLString },
-    vintage: { type: graphql.GraphQLInt },
-    price: { type: graphql.GraphQLFloat },
-    region: { type: graphql.GraphQLString },
-    country: { type: graphql.GraphQLString },
-    varietal: { type: graphql.GraphQLString },
-    notes: { type: graphql.GraphQLString },
-    rating: { type: graphql.GraphQLInt }
+const schema = buildSchema(`
+  type Note {
+    wine: String
+    vintage: Int
+    price: Float
+    region: String
+    country: String
+    varietal: String
+    notes: String
+    rating: Int
   }
-})
-const queryType = new graphql.GraphQLObjectType({
-  name: 'Query',
-  fields: {
-    getNotes: {
-      type: noteType,
-      resolve: () => {
-        return client.query("SELECT * FROM notes", (err, res) => {
-          console.log(res)
-        })
-      }
-    },
-    gethello: {
-      type: graphql.GraphQLString,
-      resolve: () => {
-        return 'Hello World'
-      }
-    }
+  type Query {
+    gethello: String
+    getNotes: [Note]
   }
-})
-const schema = new graphql.GraphQLSchema({query: queryType});
+`)
+const root = {
+  gethello: () => {
+    return "Hello World"
+  },
+  getNotes: () => {
+    return client.query("SELECT * FROM notes")
+      .then(res => res.rows) 
+  }
+}
+// const noteType = new graphql.GraphQLObjectType({
+//   name: 'Note',
+//   fields: {
+//     wine: { type: graphql.GraphQLString },
+//     vintage: { type: graphql.GraphQLInt },
+//     price: { type: graphql.GraphQLFloat },
+//     region: { type: graphql.GraphQLString },
+//     country: { type: graphql.GraphQLString },
+//     varietal: { type: graphql.GraphQLString },
+//     notes: { type: graphql.GraphQLString },
+//     rating: { type: graphql.GraphQLInt }
+//   }
+// })
+// const queryType = new graphql.GraphQLObjectType({
+//   name: 'Query',
+//   fields: {
+//     getNotes: {
+//       type: noteType,
+//       resolve: (args) => {
+//         return client.query("SELECT * FROM notes", (err, res) => {
+//           console.log(args, res.rows)
+//         })
+//       }
+//     },
+//     gethello: {
+//       type: graphql.GraphQLString,
+//       resolve: () => {
+//         return 'Hello World'
+//       }
+//     }
+//   }
+// })
+// const schema = new graphql.GraphQLSchema({query: queryType});
 
 app.use('/graphql', graphqlHTTP({
   schema: schema,
+  rootValue: root,
   graphiql: true,
 }));
 

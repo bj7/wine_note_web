@@ -26,6 +26,10 @@ export default class TastingNotes extends React.Component {
 		this.form = {};
 	}
 
+	componentDidMount() {
+		
+	}
+
 	onChange(input: Input) {
 		console.log(input);
 		this.form[input.field] = input.value;
@@ -33,15 +37,32 @@ export default class TastingNotes extends React.Component {
 
 	save() {
 		console.log(this.form);
-		Axios.post('/save', {
-			params: {
-				saveData: this.form
+		Axios.post('/graphql', {
+			query: `{
+				getNotes {
+					wine
+					vintage
+				}
+			}`
+		},
+		{
+			headers: {
+				'Content-Type': 'application/json'
 			}
 		})
-			.then(res => {
-				console.log(res);
+		.then(res => {
+			console.log(res);
+			
+		})
+		// Axios.post('/save', {
+		// 	params: {
+		// 		saveData: this.form
+		// 	}
+		// })
+		// 	.then(res => {
+		// 		console.log(res);
 
-			})
+		// 	})
 	}
 
 	render() {
