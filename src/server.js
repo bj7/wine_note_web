@@ -1,42 +1,14 @@
 const express = require('express')
 const app = express()
 const path = require('path')
-const { Client } = require('pg');
 const graphqlHTTP = require('express-graphql');
-const {buildSchema} = require('graphql');
-const connect = require('./bootstrap')
+const bootstrap = require('./bootstrap')
 
-let client = connect()
-
-const schema = buildSchema(`
-  type Note {
-    wine: String
-    vintage: Int
-    price: Float
-    region: String
-    country: String
-    varietal: String
-    notes: String
-    rating: Int
-  }
-  type Query {
-    gethello: String
-    getNotes: [Note]
-  }
-`)
-const root = {
-  gethello: () => {
-    return "Hello World"
-  },
-  getNotes: () => {
-    return client.query("SELECT * FROM notes")
-      .then(res => res.rows) 
-  }
-}
-
+let client = bootstrap.connect()
+let schema = bootstrap.setupSchema()
 app.use('/graphql', graphqlHTTP({
-  schema: schema,
-  rootValue: root,
+  schema: schema.schema,
+  rootValue: schema.root,
   graphiql: true,
 }));
 

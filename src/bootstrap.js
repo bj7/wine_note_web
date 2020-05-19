@@ -1,7 +1,8 @@
 const { Client } = require('pg');
+const {buildSchema} = require('graphql');
 
+let client;
 const connect = () => {
-	let client;
 	// heroku postgres specific
 	if (process.env.DATABASE_URL) {
 		client = new Client({
@@ -39,4 +40,37 @@ const connect = () => {
 	})
 	return client
 }
-module.exports = connect
+const setupSchema = () => {
+	const schema = buildSchema(`
+		type Note {
+			wine: String
+			vintage: Int
+			price: Float
+			region: String
+			country: String
+			varietal: String
+			notes: String
+			rating: Int
+		}
+		type Query {
+			gethello: String
+			getNotes: [Note]
+		}
+	`)
+	const root = {
+		gethello: () => {
+			return "Hello World"
+		},
+		getNotes: () => {
+			return client.query("SELECT * FROM notes")
+				.then(res => res.rows) 
+		}
+	}
+	return {root, schema}
+}
+
+const bootstrap = {
+	connect,
+	setupSchema
+}
+module.exports = bootstrap
